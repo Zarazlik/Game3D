@@ -8,4 +8,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="WinForms_GameCore">
+      <HintPath>..\WinForms_GameCore\bin\Debug\net6.0-windows\WinForms_GameCore.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
