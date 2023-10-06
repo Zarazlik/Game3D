@@ -9,7 +9,7 @@ namespace Game3D
 
             Game = new Game3D(this);
             GameLogic = Game;
-            GameLogic.Camera = new TileCamera3D(MainDisplay, new Point(4, 4), Game);
+            GameLogic.Camera = new TileCamera3D(MainDisplay, new Point(8, 4), Game);
 
             GameLogic.LoadGame();
             //StartGame();
@@ -17,13 +17,13 @@ namespace Game3D
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Game.Angel -= 10;
+            Game.ViewDirection -= 5;
             Game.Camera.MakeFrame();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Game.Angel += 10;
+            Game.ViewDirection += 5;
             Game.Camera.MakeFrame();
         }
     }

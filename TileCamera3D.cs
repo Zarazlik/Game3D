@@ -18,12 +18,14 @@ namespace Game3D
 
         const float maxDistance = 20;
         const int RayCount = 40;
-        const float AngleBetweenRays = 1;
+        float VisionAngle = 80;
+
         Point Resolution = new Point(800, 600);
         const float Step = 0.1f;
 
         int LineWhidh;
         float LineHigtStep;
+        float AngleBetweenRays;
 
         public TileCamera3D(PictureBox pictureBox, Point position, Game3D game3D)
         {
@@ -33,28 +35,39 @@ namespace Game3D
 
             LineWhidh = Resolution.X / RayCount;
             LineHigtStep = Resolution.Y / (maxDistance / Step);
+            AngleBetweenRays = RayCount / VisionAngle;
         }
 
         public void MakeFrame()
         {
             Bitmap bitmap = new Bitmap(Resolution.X, Resolution.Y);
 
+            float StartAngel = Game3D.ViewDirection - (AngleBetweenRays * RayCount / 2);
+
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {
-                (bool, Color, float) rayData = Ray(Game3D.Angel);
-
-                
-                if (rayData.Item1)
+                for (int i = 0; i < RayCount; i++)
                 {
-                    int ColumSize = GetColumSize(rayData.Item3);
-                    int columGap = (800 - ColumSize) / 2;
+                    (bool, Color, float) rayData = Ray(StartAngel + (AngleBetweenRays * i));
 
-                    graphics.DrawLine(new Pen(rayData.Item2, 600), new Point(400,  columGap), new Point(400,  600 - columGap));
+                    if (rayData.Item1)
+                    {
+                        int ColumSize = GetColumSize(rayData.Item3);
+                        int columGap = (Resolution.X - ColumSize) / 2;
+
+                        graphics.DrawLine(new Pen(rayData.Item2, LineWhidh), new Point((LineWhidh * i) + (LineWhidh/ 2) , columGap), new Point((LineWhidh * i) + (LineWhidh / 2), Resolution.Y - columGap));
+                    }
                 }
             }
 
             PictureBox.Image = bitmap;
-            Game3D.CoreForm.label1.Text = Game3D.Angel.ToString();
+            Game3D.CoreForm.label1.Text = Game3D.ViewDirection.ToString();
+
+
+            int GetColumSize(float dictace)
+            {
+                return (int)(Resolution.X - (dictace * 20));
+            }
         }
 
         public void Resize()
@@ -71,11 +84,11 @@ namespace Game3D
             while (RayNotFinishDictace() && RayOnMap())
             {
                 // Отправка Луча
-                double angleInRadians = angleInDegrees * (Math.PI / 180);
-                double cosTheta = Math.Cos(angleInRadians);
-                double sinTheta = Math.Sin(angleInRadians);
-                rayLocation.X += (float)(cosTheta * Step);
-                rayLocation.Y += (float)(sinTheta * Step);
+                float angleInRadians = (float)(angleInDegrees * (Math.PI / 180));
+                float cosTheta = (float)Math.Cos(angleInRadians);
+                float sinTheta = (float)Math.Sin(angleInRadians);
+                rayLocation.X += (cosTheta * Step);
+                rayLocation.Y += (sinTheta * Step);
 
                 nowDistace += Step;
 
@@ -101,6 +114,18 @@ namespace Game3D
 
             return (false, Color.Black, 0);
 
+            bool RayNotFinishDictace()
+            {
+                if (nowDistace < maxDistance)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
 
             bool RayOnMap()
             {
@@ -112,26 +137,9 @@ namespace Game3D
                 {
                     return false;
                 }
-            }
-
-            bool RayNotFinishDictace()
-            {
-                if (nowDistace < maxDistance)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-                
-            }
+            }  
         }
 
 
-        int GetColumSize(float dictace) 
-        {
-            return (int)(800 - (dictace * 20));
-        }
     }
 }
