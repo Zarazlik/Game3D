@@ -8,7 +8,7 @@ namespace Game3D
 {
     public struct Tile
     {
-        Color Color;
+        public Color Color {  get; set; }
 
         public Tile(Color color)
         {

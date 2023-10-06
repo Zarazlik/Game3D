@@ -2,13 +2,29 @@ namespace Game3D
 {
     public partial class Form1 : GrammyDevStudio.WinForms_GameCore.CoreForm
     {
+        Game3D Game;
         public Form1()
         {
             InitializeComponent();
 
-            GameLogic = new Game3D(this);
+            Game = new Game3D(this);
+            GameLogic = Game;
+            GameLogic.Camera = new TileCamera3D(MainDisplay, new Point(4, 6), Game);
 
             GameLogic.LoadGame();
+            StartGame();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Game.Angel -= 10;
+            Game.Camera.MakeFrame();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Game.Angel += 10;
+            Game.Camera.MakeFrame();
         }
     }
 }
