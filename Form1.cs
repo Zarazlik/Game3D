@@ -9,10 +9,10 @@ namespace Game3D
 
             Game = new Game3D(this);
             GameLogic = Game;
-            GameLogic.Camera = new TileCamera3D(MainDisplay, new Point(4, 6), Game);
+            GameLogic.Camera = new TileCamera3D(MainDisplay, new Point(4, 4), Game);
 
             GameLogic.LoadGame();
-            StartGame();
+            //StartGame();
         }
 
         private void button1_Click(object sender, EventArgs e)
